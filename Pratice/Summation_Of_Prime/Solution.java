@@ -1,4 +1,4 @@
-package Special_Pythagorean_Triplet;
+package Summation_Of_Prime;
 
 import java.io.*;
 import java.math.*;
@@ -13,7 +13,32 @@ import java.util.stream.*;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
+
 public class Solution {
+    private static List<Long> list = new ArrayList<>();
+
+    static {
+        int i = 0;
+        int j = 2;
+        list.add((long) 2);
+        while (i <= 100001) {
+            j++;
+            if (isPrime(j)) {
+                list.add((long) j);
+                i++;
+            }
+        }
+    }
+
+    public static boolean isPrime(int n) {
+        for (int i = 2; i <= Math.sqrt(n); i++) {
+            if (n % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public static void main(String[] args) throws IOException {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
 
@@ -22,45 +47,18 @@ public class Solution {
         IntStream.range(0, t).forEach(tItr -> {
             try {
                 int n = Integer.parseInt(bufferedReader.readLine().trim());
-                solve(n);
+                long total =0;
+                int i=0;
+                while (list.get(i) <= n) {
+                    total = list.get((int) i) +total;
+                    i++;
+                }
+                System.out.println(total);
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
 
         bufferedReader.close();
-    }
-
-
-    private static void solve(int n) {
-
-        long maxProduct = -1;
-
-        if (n % 2 != 0) {
-            System.out.println("-1");
-            return;
-        }
-        long N = n;
-
-        for (long a = 1; a <= N / 3; a++) {
-
-            long tuSo = N * N - 2 * N * a;
-            long mauSo = 2 * (N - a);
-
-            if (mauSo > 0 && tuSo % mauSo == 0) {
-                long b = tuSo / mauSo;
-                long c = N - a - b;
-
-                if (a < b && b < c) {
-                    long currentProduct = a * b * c;
-
-                    if (currentProduct > maxProduct) {
-                        maxProduct = currentProduct;
-                    }
-                }
-            }
-        }
-
-        System.out.println(maxProduct);
     }
 }
